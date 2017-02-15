@@ -20,3 +20,29 @@
 | 后端   | [django-rest-framework](http://www.django-rest-framework.org/) |
 | 数据库  | mysql                                    |
 
+## 问题
+在使用`python-jenkins`时, 去修改job配置时,会报如下错误:
+```
+UnicodeDecodeError: 'ascii' codec can't decode byte 0xe5 in position 322: ordinal not in range(128)
+> c:\python27\lib\httplib.py(897)_send_output()
+    895
+    896         if isinstance(message_body, str):
+--> 897             msg += message_body
+    898             message_body = None
+    899         self.send(msg)
+```错误是由于请求头添加了` u'Jenkins-Crumb:`,导致unicode和str相加(有非ascii就会报错). 一种解决是修改`python-jenkins`代码:
+```
+    def maybe_add_crumb(self, req):
+        # We don't know yet whether we need a crumb
+        if self.crumb is None:
+            try:
+                response = self.jenkins_open(Request(
+                    self._build_url(CRUMB_URL)), add_crumb=False)
+            except (NotFoundException, EmptyResponseException):
+                self.crumb = False
+            else:
+                self.crumb = json.loads(response)
+        if self.crumb:
+            req.add_header(self.crumb['crumbRequestField'].encode("utf-8"), self.crumb['crumb'].encode("utf-8"))
+  ```
+  我这里把unicode给encode了一下.
