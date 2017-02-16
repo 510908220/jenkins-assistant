@@ -21,3 +21,16 @@ for job in server.get_jobs():
     add_auth_token(job['name'], 'TOKEN_NAME')
 
   
+# 视图操作
+
+## 创建视图
+def create_view(view_name):
+    view_name = view_name.strip()
+    if server.view_exists(view_name):
+        server.delete_view(view_name)
+    
+    view_template_dict = xmltodict.parse(jenkins.EMPTY_VIEW_CONFIG_XML)
+    view_template_dict['hudson.model.ListView']['name'] = view_name
+    view_template_dict['hudson.model.ListView']['includeRegex'] = view_name + ".*"
+    server.create_view(view_name, xmltodict.unparse(view_template_dict, pretty=True))
+
