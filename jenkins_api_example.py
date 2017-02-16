@@ -31,6 +31,6 @@ def create_view(view_name):
     
     view_template_dict = xmltodict.parse(jenkins.EMPTY_VIEW_CONFIG_XML)
     view_template_dict['hudson.model.ListView']['name'] = view_name
-    view_template_dict['hudson.model.ListView']['includeRegex'] = view_name + ".*"
+    view_template_dict['hudson.model.ListView']['includeRegex'] = view_name
     server.create_view(view_name, xmltodict.unparse(view_template_dict, pretty=True))
 
