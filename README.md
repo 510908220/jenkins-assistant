@@ -46,3 +46,8 @@ UnicodeDecodeError: 'ascii' codec can't decode byte 0xe5 in position 322: ordina
             req.add_header(self.crumb['crumbRequestField'].encode("utf-8"), self.crumb['crumb'].encode("utf-8"))
   ```
   我这里把unicode给encode了一下.
+
+
+## 高级
+
+http://pghalliday.com/jenkins/groovy/sonar/chef/configuration/management/2014/09/21/some-useful-jenkins-groovy-scripts.html

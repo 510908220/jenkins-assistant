@@ -1,5 +1,8 @@
+# -*- encoding: utf-8 -*-
+
 import jenkins
 import xmltodict
+
 server = jenkins.Jenkins('http://192.168.56.102:32769', username='westdoorblowcola',
                          password='ebf8901e193566bc6eb934b8445acc9c')
 plugins = server.get_plugins()
@@ -7,23 +10,21 @@ plugins = server.get_plugins()
 print server.get_plugin_info('Ant Plugin')
 
 
-
-# 修改job配置
-
-## 打开"触发远程构建"选项，设置"身份验证令牌"
-def add_auth_token(job_name,auth_token):
+# 打开"触发远程构建"选项，设置"身份验证令牌"
+def add_auth_token(job_name, auth_token):
     old_config_xml = server.get_job_config(job_name)
     old_config_dict = xmltodict.parse(old_config_xml)
     old_config_dict['project']["authToken"] = auth_token
     server.reconfig_job(job_name.encode("utf-8"), xmltodict.unparse(old_config_dict, pretty=True))
-    
+
+
 for job in server.get_jobs():
     add_auth_token(job['name'], 'TOKEN_NAME')
 
-  
-# 视图操作
 
-## 创建视图
+
+
+#创建视图
 def create_view(view_name):
     view_name = view_name.strip()
     if server.view_exists(view_name):
@@ -34,3 +35,10 @@ def create_view(view_name):
     view_template_dict['hudson.model.ListView']['includeRegex'] = view_name + ".*"
     server.create_view(view_name, xmltodict.unparse(view_template_dict, pretty=True))
 
+
+# 获取插件信息
+# 查看插件信息，参数为Plugin ID
+# 可以检查必须插件是否存在或版本是否满足
+print server.get_plugin_info("subversion")
+
+# Job信息
