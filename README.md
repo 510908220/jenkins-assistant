@@ -8,6 +8,7 @@
 | ------------------ | ------------------- |
 | python-jenkins接口整理 | [api](api.md)       |
 | jenkins插件修改打包      | [plugin](plugin.md) |
+| 证书(Credentials)    | [credentials](credentials.md)         |
 
 
 
@@ -16,3 +17,4 @@
 - 一键为项目添加`pylint`代码检查
 - 批量增加`SSh Site`,设置远程机器信息以供job使用.
 - 管理job、视图管理等
+- 管理Credentials
